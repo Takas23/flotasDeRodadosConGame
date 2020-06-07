@@ -1,0 +1,91 @@
+import trafic3.*
+import rodados3.*
+import dependencia3.*
+import pedidos.*
+
+test "test_dependencias" {
+	const deportes = new Dependencia()
+	const cultura = new Dependencia()
+	const cachito = new Corsa()
+	const corsaAzul1 = new Corsa()
+	const corsaVerde1 = new Corsa()
+	const kwidCT1 = new Kwid()
+	const kwidCT2 = new Kwid()
+	const kwidCT3 = new Kwid()
+	const kwidST1 = new Kwid()
+	const especial1 = new Especial()
+	
+	deportes.empleados(45)
+	cultura.empleados(31)
+	cachito.color("rojo")
+	corsaAzul1.color("azul")
+	corsaVerde1.color("verde")
+	kwidCT1.tanqueAdicional(true)
+	kwidCT2.tanqueAdicional(true)
+	kwidCT3.tanqueAdicional(true)
+	kwidST1.tanqueAdicional(false)
+	especial1.capacidad(5)
+	especial1.velocidadMax(160)
+	especial1.peso(1200)
+	especial1.color("beige")
+	trafic.interior(interiorPopular)
+	trafic.motor(motorBataton)
+	
+	deportes.agregarAFlota(cachito)		//1300kg 150kmh 4p
+	deportes.agregarAFlota(corsaAzul1)	//1300kg 150kmh 4p
+	deportes.agregarAFlota(corsaVerde1)	//1300kg 150kmh 4p
+	deportes.agregarAFlota(especial1)	//1200kg 160kmh 5p
+	deportes.agregarAFlota(kwidCT1)		//1350kg 120kmh 3p
+	cultura.agregarAFlota(cachito)		//1300kg 150kmh 4p
+	cultura.agregarAFlota(kwidCT2)		//1350kg 120kmh 3p
+	cultura.agregarAFlota(kwidCT3)		//1350kg 120kmh 3p
+	cultura.agregarAFlota(kwidST1)		//1200kg 110kmh 4p
+	cultura.agregarAFlota(trafic)		//5500kg 80kmh 12p
+	//deportes
+	assert.equals(6450, deportes.pesoTotalFlota())
+	assert.that(deportes.estaBienEquipada())
+	assert.equals(7, deportes.capacidadTotalEnColor("azul"))
+	assert.equals("beige", deportes.colorDelRodadoMasRapido())
+	assert.that(deportes.esGrande())
+	assert.equals(25, deportes.capacidadFaltante())
+	//cultura
+	assert.equals(10700, cultura.pesoTotalFlota())
+	assert.notThat(cultura.estaBienEquipada())
+	assert.equals(10, cultura.capacidadTotalEnColor("azul"))
+	assert.equals("rojo", cultura.colorDelRodadoMasRapido())
+	assert.notThat(cultura.esGrande())
+	assert.equals(5, cultura.capacidadFaltante())
+	
+	
+}
+	test "pedido1" {
+		const cachito = new Corsa()
+		cachito.color("rojo")
+		const pedido1 = new Pedido(distancia=960, tiempoMax=8, pasajeros=4, coloresInc=#{"azul", "negro"})
+		
+		assert.that(pedido1.satisfacePedido(cachito))
+	}
+	
+	test "pedido2" {
+		const cachito = new Corsa()
+		cachito.color("rojo")
+		const pedido1 = new Pedido(distancia=960, tiempoMax=8, pasajeros=4, coloresInc=#{"azul", "rojo", "negro"})
+		
+		assert.notThat(pedido1.satisfacePedido(cachito))
+	}
+	
+	test "pedido3" {
+		const cachito = new Corsa()
+		cachito.color("rojo")
+		const pedido1 = new Pedido(distancia=960, tiempoMax=8, pasajeros=6, coloresInc=#{"azul", "negro"})
+		
+		assert.notThat(pedido1.satisfacePedido(cachito))
+	}
+	
+	test "pedido4" {
+		const cachito = new Corsa()
+		cachito.color("rojo")
+		const pedido1 = new Pedido(distancia=960, tiempoMax=6, pasajeros=4, coloresInc=#{"azul", "negro"})
+		
+		assert.notThat(pedido1.satisfacePedido(cachito))	
+	}

@@ -12,9 +12,9 @@ class Pedido {
 		return self.distancia() / self.tiempoMax()
 	}
 	method satisfacePedido(auto) {
-		return	(auto.velocidadMax() + 10) >= self.velocidadReq() and
+		return	(auto.velocidadMax() - 10) >= self.velocidadReq() and
 				auto.capacidad() >= self.pasajeros() and
-				not coloresInc.any(auto.color())
+				not coloresInc.contains(auto.color())
 	}
 	method acelerar() {
 		tiempoMax -= 1
