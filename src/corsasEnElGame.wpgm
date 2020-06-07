@@ -1,7 +1,29 @@
 import wollok.game.*
+import rodados3.*
+import colores.*
 
 program corsasEnElGame {
-	// hacer las inicializaciones necesarias 
+	game.title("El Corsi")
+	game.height(16)
+	game.width(16)
+	
+	const corsi = new Corsa()
+	
+	corsi.irA(4, 7)
+	game.addVisual(corsi)
+	
+	
+	keyboard.up().onPressDo({corsi.moveArriba()})
+	keyboard.down().onPressDo({corsi.moveAbajo()})
+	keyboard.left().onPressDo({corsi.moveIzquierda()})
+	keyboard.right().onPressDo({corsi.moveDerecha()})
+	keyboard.r().onPressDo({corsi.cambioColor(rojo)})
+	keyboard.v().onPressDo({corsi.cambioColor(verde)})
+	keyboard.a().onPressDo({corsi.cambioColor(azul)})
+		
 	
 	game.start()
+	
+	
+	
 }
