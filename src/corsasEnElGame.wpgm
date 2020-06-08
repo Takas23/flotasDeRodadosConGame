@@ -8,20 +8,37 @@ program corsasEnElGame {
 	game.width(16)
 	
 	const corsi = new Corsa()
+	const corso = new Corsa()
+	const pipo = new Corsa()
+	const pared01 = new Pared()
 	
-	corsi.irA(4, 7)
+//	var autos = #{corsi, corso, pipo}
+	var autoActivo = corsi
+	
+	corsi.position(game.at(4,7))
+	corso.position(game.at(6,4))
+	pipo.position(game.at(5,2))
+	pared01.position(game.at(10, 10))
 	game.addVisual(corsi)
-	
-	
-	keyboard.up().onPressDo({corsi.moveArriba()})
-	keyboard.down().onPressDo({corsi.moveAbajo()})
-	keyboard.left().onPressDo({corsi.moveIzquierda()})
-	keyboard.right().onPressDo({corsi.moveDerecha()})
-	keyboard.r().onPressDo({corsi.cambioColor(rojo)})
-	keyboard.v().onPressDo({corsi.cambioColor(verde)})
-	keyboard.a().onPressDo({corsi.cambioColor(azul)})
+	game.addVisual(corso)
+	game.addVisual(pipo)
+	game.addVisual(pared01)
 		
+	keyboard.up().onPressDo({autoActivo.moveArriba()})
+	keyboard.down().onPressDo({autoActivo.moveAbajo()})
+	keyboard.left().onPressDo({autoActivo.moveIzquierda()})
+	keyboard.right().onPressDo({autoActivo.moveDerecha()})
+	keyboard.r().onPressDo({autoActivo.cambioColor(rojo)})
+	keyboard.v().onPressDo({autoActivo.cambioColor(verde)})
+	keyboard.a().onPressDo({autoActivo.cambioColor(azul)})
+	keyboard.num1().onPressDo({autoActivo = corsi})	
+	keyboard.num2().onPressDo({autoActivo = corso})
+	keyboard.num3().onPressDo({autoActivo = pipo})
 	
+	game.onCollideDo( autoActivo, { pared => 
+			pared.choque()
+			autoActivo.choque()	})
+
 	game.start()
 	
 	
