@@ -11,34 +11,91 @@ program corsasEnElGame {
 	const corso = new Corsa()
 	const pipo = new Corsa()
 	const pared01 = new Pared()
+	const pared02 = new Pared()
 	
-//	var autos = #{corsi, corso, pipo}
+	var autos = #{corsi, corso, pipo}
 	var autoActivo = corsi
+	var todosJuntos = false
 	
 	corsi.position(game.at(4,7))
 	corso.position(game.at(6,4))
 	pipo.position(game.at(5,2))
 	pared01.position(game.at(10, 10))
+	pared02.position(game.at(10, 11))
 	game.addVisual(corsi)
 	game.addVisual(corso)
 	game.addVisual(pipo)
 	game.addVisual(pared01)
-		
-	keyboard.up().onPressDo({autoActivo.moveArriba()})
-	keyboard.down().onPressDo({autoActivo.moveAbajo()})
-	keyboard.left().onPressDo({autoActivo.moveIzquierda()})
-	keyboard.right().onPressDo({autoActivo.moveDerecha()})
-	keyboard.r().onPressDo({autoActivo.cambioColor(rojo)})
-	keyboard.v().onPressDo({autoActivo.cambioColor(verde)})
-	keyboard.a().onPressDo({autoActivo.cambioColor(azul)})
-	keyboard.num1().onPressDo({autoActivo = corsi})	
-	keyboard.num2().onPressDo({autoActivo = corso})
-	keyboard.num3().onPressDo({autoActivo = pipo})
-	
-	game.onCollideDo( autoActivo, { pared => 
-			pared.choque()
-			autoActivo.choque()	})
+	game.addVisual(pared02)
 
+	keyboard.num1().onPressDo({
+		autoActivo = corsi
+		todosJuntos = false
+	})	
+	keyboard.num2().onPressDo({
+		autoActivo = corso
+		todosJuntos = false
+	})
+	keyboard.num3().onPressDo({
+		autoActivo = pipo
+		todosJuntos = false
+	})
+//	keyboard.num4().onPressDo({autoActivo = autos})
+	keyboard.num4().onPressDo({todosJuntos = true})
+
+	game.onCollideDo( autoActivo, { pared => 
+			game.say(pared, "ouch")
+			pared.choque()
+			autoActivo.choque()})
+/*
+	if(todosJuntos) {
+		game.onCollideDo( autos, { pared => 
+		game.say(pared, "ouch")
+		pared.choque()
+		autos.forEach({auto => auto.choque()})})
+	} 
+		else {game.onCollideDo( autoActivo, { pared => 
+			game.say(pared, "ouch")
+			pared.choque()
+			autoActivo.choque()})
+		}
+*/		
+	keyboard.up().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.moveArriba()}) }
+			else autoActivo.moveArriba()})
+			
+	keyboard.down().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.moveAbajo()}) }
+			else autoActivo.moveAbajo()})
+			
+	keyboard.left().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.moveIzquierda()}) }
+			else autoActivo.moveIzquierda()})
+			
+	keyboard.right().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.moveDerecha()}) }
+			else autoActivo.moveDerecha()})
+
+	keyboard.r().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.cambioColor(rojo)}) }
+			else autoActivo.cambioColor(rojo)})
+			
+	keyboard.v().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.cambioColor(verde)}) }
+			else autoActivo.cambioColor(verde)})
+			
+	keyboard.a().onPressDo({
+		if (todosJuntos) {
+		autos.forEach({auto => auto.cambioColor(azul)}) }
+			else autoActivo.cambioColor(azul)
+	})
+	
 	game.start()
 	
 	

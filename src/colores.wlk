@@ -39,3 +39,4 @@ object medio {
 object floja {
 	method image() { return "pared1.png" }
 }
+
